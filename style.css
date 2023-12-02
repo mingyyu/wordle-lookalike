@@ -7,3 +7,23 @@ body {
     border: 1px solid #dee2e6;
     border-radius: 10px;
   }
+  
+  /* Speech bubble style */
+  .speech-bubble {
+    position: relative;
+  }
+  
+  .speech-bubble:before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 15px solid transparent;
+    border-bottom-color: #ffffff; /* Set the background color of the speech bubble */
+    border-top: 0;
+    margin-left: -15px;
+    margin-top: -7px;
+  }
+  
