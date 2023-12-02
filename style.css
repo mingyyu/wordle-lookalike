@@ -27,3 +27,30 @@ body {
     margin-top: -7px;
   }
   
+  .keyboard {
+  
+  }
+  
+  .kb-row {
+    display: flex;
+    width: 100%;
+    justify-content: center!important;
+  }
+  
+  .kb-row .btn {
+    width: 8vw;
+    height: 8vw;
+    min-width: 8vw;
+    max-width: 8vw;
+    margin: .5%!important;
+    text-align: center;
+    font-size: 3vw;
+    border-width: 3px;
+    border-color: #000;
+  }
+  
+  .kb-row .btn-wide {
+    width: 12vw;
+    min-width: 12vw!important;
+    max-width: 12vw!important;
+  }```
