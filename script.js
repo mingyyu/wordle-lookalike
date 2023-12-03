@@ -172,7 +172,11 @@ document.addEventListener("DOMContentLoaded", function () {
   
       // Replace {guesses} with the actual number of rows
       var statsText =
-        "The word was " + answer + "<br>WORDLE " + guesses + "/6<br>UNDER DEVELOPMENT";
+        "The word was " +
+        answer +
+        "<br>WORDLE " +
+        guesses +
+        "/6<br>UNDER DEVELOPMENT";
   
       // Replace 🟨🟩⬜ with the actual situations in the rows and boxes
       //var row1 = "⬜⬜🟩⬜⬜";
@@ -182,12 +186,16 @@ document.addEventListener("DOMContentLoaded", function () {
       //var row5 = "🟩🟩🟩🟩🟩";
   
       //statsText +=
-        //row1 + "<br>" + row2 + "<br>" + row3 + "<br>" + row4 + "<br>" + row5;
+      //row1 + "<br>" + row2 + "<br>" + row3 + "<br>" + row4 + "<br>" + row5;
       modalTitle.innerHTML = ["Congratulations!", "RIP LZY"][result];
       modalContent.innerHTML = statsText;
   
       // Show the modal
-      $("#resultsModal").modal("show");
+      //$("#resultsModal").modal("show");
+      var results_modal = new bootstrap.Modal(
+        document.getElementById("resultsModal"),
+      );
+      results_modal.toggle();
     }
   
     document.getElementById("copyStats").addEventListener("click", function () {
