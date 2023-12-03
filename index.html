@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
     <title>Bootstrap demo</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -91,49 +94,77 @@
         <div class="col letter-box" id="box55"></div>
       </div>
       <div class="row letter-row" id="row6">
-        <div class="col letter-box" id="box11"></div>
-        <div class="col letter-box" id="box12"></div>
-        <div class="col letter-box" id="box13"></div>
-        <div class="col letter-box" id="box14"></div>
-        <div class="col letter-box" id="box15"></div>
+        <div class="col letter-box" id="box61"></div>
+        <div class="col letter-box" id="box62"></div>
+        <div class="col letter-box" id="box63"></div>
+        <div class="col letter-box" id="box64"></div>
+        <div class="col letter-box" id="box65"></div>
       </div>
 
       <div class="keyboard">
         <div class="kb-row">
-          <button class="btn btn-dark keyboard-button" data-letter="Q">Q</button
-          ><button class="btn btn-dark keyboard-button" data-letter="W">W</button
-          ><button class="btn btn-dark keyboard-button" data-letter="E">E</button
-          ><button class="btn btn-dark keyboard-button" data-letter="R">R</button
-          ><button class="btn btn-dark keyboard-button" data-letter="T">T</button
-          ><button class="btn btn-dark keyboard-button" data-letter="Y">Y</button
-          ><button class="btn btn-dark keyboard-button" data-letter="U">U</button
-          ><button class="btn btn-dark keyboard-button" data-letter="I">I</button
-          ><button class="btn btn-dark keyboard-button" data-letter="O">O</button
-          ><button class="btn btn-dark keyboard-button" data-letter="P">P</button>
+          <button class="btn btn-dark keyboard-button" data-letter="Q" id="Q">
+            Q</button
+          ><button class="btn btn-dark keyboard-button" data-letter="W" id="W">
+            W</button
+          ><button class="btn btn-dark keyboard-button" data-letter="E" id="E">
+            E</button
+          ><button class="btn btn-dark keyboard-button" data-letter="R" id="R">
+            R</button
+          ><button class="btn btn-dark keyboard-button" data-letter="T" id="T">
+            T</button
+          ><button class="btn btn-dark keyboard-button" data-letter="Y" id="Y">
+            Y</button
+          ><button class="btn btn-dark keyboard-button" data-letter="U" id="U">
+            U</button
+          ><button class="btn btn-dark keyboard-button" data-letter="I" id="I">
+            I</button
+          ><button class="btn btn-dark keyboard-button" data-letter="O" id="O">
+            O</button
+          ><button class="btn btn-dark keyboard-button" data-letter="P" id="P">
+            P
+          </button>
         </div>
         <div class="kb-row">
-          <button class="btn btn-dark keyboard-button" data-letter="A">A</button
-          ><button class="btn btn-dark keyboard-button" data-letter="S">S</button
-          ><button class="btn btn-dark keyboard-button" data-letter="D">D</button
-          ><button class="btn btn-dark keyboard-button" data-letter="F">F</button
-          ><button class="btn btn-dark keyboard-button" data-letter="G">G</button
-          ><button class="btn btn-dark keyboard-button" data-letter="H">H</button
-          ><button class="btn btn-dark keyboard-button" data-letter="J">J</button
-          ><button class="btn btn-dark keyboard-button" data-letter="K">K</button
-          ><button class="btn btn-dark keyboard-button" data-letter="L">L</button>
+          <button class="btn btn-dark keyboard-button" data-letter="A" id="A">
+            A</button
+          ><button class="btn btn-dark keyboard-button" data-letter="S" id="S">
+            S</button
+          ><button class="btn btn-dark keyboard-button" data-letter="D" id="D">
+            D</button
+          ><button class="btn btn-dark keyboard-button" data-letter="F" id="F">
+            F</button
+          ><button class="btn btn-dark keyboard-button" data-letter="G" id="G">
+            G</button
+          ><button class="btn btn-dark keyboard-button" data-letter="H" id="H">
+            H</button
+          ><button class="btn btn-dark keyboard-button" data-letter="J" id="J">
+            J</button
+          ><button class="btn btn-dark keyboard-button" data-letter="K" id="K">
+            K</button
+          ><button class="btn btn-dark keyboard-button" data-letter="L" id="L">
+            L
+          </button>
         </div>
         <div class="kb-row">
           <button class="btn btn-dark btn-wide" id="submitBtn">
             <i class="bi bi-box-arrow-in-right"></i>
           </button>
           <!---->
-          <button class="btn btn-dark keyboard-button" data-letter="Z">Z</button
-          ><button class="btn btn-dark keyboard-button" data-letter="X">X</button
-          ><button class="btn btn-dark keyboard-button" data-letter="C">C</button
-          ><button class="btn btn-dark keyboard-button" data-letter="V">V</button
-          ><button class="btn btn-dark keyboard-button" data-letter="B"">B</button
-          ><button class="btn btn-dark keyboard-button" data-letter="N">N</button
-          ><button class="btn btn-dark keyboard-button" data-letter="M">M</button
+          <button class="btn btn-dark keyboard-button" data-letter="Z" id="Z">
+            Z</button
+          ><button class="btn btn-dark keyboard-button" data-letter="X" id="X">
+            X</button
+          ><button class="btn btn-dark keyboard-button" data-letter="C" id="C">
+            C</button
+          ><button class="btn btn-dark keyboard-button" data-letter="V" id="V">
+            V</button
+          ><button class="btn btn-dark keyboard-button" data-letter="B" id="B">
+            B</button
+          ><button class="btn btn-dark keyboard-button" data-letter="N" id="N">
+            N</button
+          ><button class="btn btn-dark keyboard-button" data-letter="M" id="M">
+            M</button
           ><button class="btn btn-dark btn-wide" id="removeLetterBtn">
             <i class="bi bi-backspace"></i>
           </button>
@@ -160,7 +191,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content speech-bubble">
           <div class="modal-body">
-            <h5 class="modal-title" id="helpModalLabel">Wordle Game Help</h5>
+            <h5 class="modal-title" id="helpModalLabel">Wordle</h5>
             <p>Welcome to the Wordle Game! Here's how to play:</p>
             <ul>
               <li>
@@ -180,7 +211,11 @@
                   <span class="text-warning">Yellow</span>: Correct letter in
                   the wrong position
                 </li>
-                <li><span class="text-danger">Red</span>: Incorrect letter</li>
+                <li>
+                  <span class="text-dark" style="color: #6c757d !important"
+                    >Grey</span
+                  >: Incorrect letter
+                </li>
               </ul>
               <li>
                 Use the feedback to refine your guesses and uncover the hidden
@@ -197,6 +232,47 @@
               data-bs-dismiss="modal"
             >
               Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="congratsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="congratsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="congratsModalLabel">
+              Congratulations!
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalContent">
+            <!-- Content will be dynamically populated here -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" onclick="copyStats()">
+              Copy Stats
             </button>
           </div>
         </div>

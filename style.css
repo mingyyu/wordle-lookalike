@@ -52,11 +52,13 @@ body {
   margin: 0.5% !important;
   text-align: center;
   font-size: 100%;
+  font-weight: bold;
   padding: 0;
 }
 
 .kb-row .btn-wide {
   width: 15%;
+  font-weight: bold;
 }
 
 .letter-row {
@@ -77,4 +79,24 @@ body {
   font-weight: bold;
   padding: 0;
   border: 2px solid #c4c4c4; /* Border color (adjust as needed) */
+}
+
+.not-included {
+  background-color: #f8f9fa;
+  border: 0 !important;
+}
+
+.correct-position {
+  background-color: #14a44b;
+  border-color: #14a44b !important;
+}
+
+.wrong-position {
+  background-color: #e4a11b;
+  border-color: #e4a11b !important;
+}
+
+.incorrect {
+  background-color: #6c757d;
+  border-color: #6c757d !important;
 }
