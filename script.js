@@ -159,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
       errorMessage.style.top = "20%";
       errorMessage.style.left = "50%";
       errorMessage.style.transform = "translate(-50%, -50%)";
+      errorMessage.style.zIndex = "10000";
       document.body.appendChild(errorMessage);
   
       setTimeout(() => {
@@ -169,25 +170,27 @@ document.addEventListener("DOMContentLoaded", function () {
     function showResultsModal(guesses, result) {
       var modalTitle = document.getElementById("resultsModalLabel");
       var modalContent = document.getElementById("modalContent");
-  
       // Replace {guesses} with the actual number of rows
-      var statsText =
+      var statsText = "WORDLE " + guesses + "/6<br><br>";
+      for (let i = 1; i <= guesses; i++) {
+        for (let j = 1; j <= 5; j++) {
+          var box = document.getElementById("box" + i + j);
+          if (box.classList.contains("correct-position")) {
+            statsText += "🟩";
+          } else if (box.classList.contains("wrong-position")) {
+            statsText += "🟨";
+          } else {
+            statsText += "⬜";
+          }
+        }
+        statsText += "<br>";
+      }
+  
+      modalTitle.innerHTML =
+        ["Congratulations! ", "Try again! "][result] +
         "The word was " +
         answer +
-        "<br>WORDLE " +
-        guesses +
-        "/6<br>UNDER DEVELOPMENT";
-  
-      // Replace 🟨🟩⬜ with the actual situations in the rows and boxes
-      //var row1 = "⬜⬜🟩⬜⬜";
-      //var row2 = "⬜🟨🟩⬜⬜";
-      //var row3 = "⬜⬜🟩⬜🟨";
-      //var row4 = "⬜⬜🟩⬜⬜";
-      //var row5 = "🟩🟩🟩🟩🟩";
-  
-      //statsText +=
-      //row1 + "<br>" + row2 + "<br>" + row3 + "<br>" + row4 + "<br>" + row5;
-      modalTitle.innerHTML = ["Congratulations!", "RIP LZY"][result];
+        ".";
       modalContent.innerHTML = statsText;
   
       // Show the modal
@@ -199,16 +202,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     document.getElementById("copyStats").addEventListener("click", function () {
-      var copyText = document.getElementById("modalContent").textContent;
-  
-      // Select the text field
-      copyText.select();
-      copyText.setSelectionRange(0, 99999); // For mobile devices
-  
-      // Copy the text inside the text field
-      navigator.clipboard.writeText(copyText.value);
-  
-      displayErrorMessage("Stats copied to clipboard!");
+      var text_to_copy = document
+        .getElementById("modalContent")
+        .innerText.replace("<br>", "\n"); //textContent
+      console.log(text_to_copy);
+      if (!navigator.clipboard) {
+        displayErrorMessage("Failed to copy stats");
+      } else {
+        navigator.clipboard
+          .writeText(text_to_copy)
+          .then(function () {
+            displayErrorMessage("Copied to clipboard!"); // success
+          })
+          .catch(function () {
+            displayErrorMessage("Failed to copy stats"); // error
+          });
+      }
     });
   
     // Add a click event listener to each keyboard button
