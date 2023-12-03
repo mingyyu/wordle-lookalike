@@ -173,6 +173,7 @@
       </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
@@ -188,7 +189,7 @@
       aria-labelledby="helpModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content speech-bubble">
           <div class="modal-body">
             <h5 class="modal-title" id="helpModalLabel">Wordle</h5>
@@ -239,22 +240,20 @@
     </div>
     <div
       class="modal fade"
-      id="congratsModal"
+      id="resultsModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="congratsModalLabel"
+      aria-labelledby="resultsModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content speech-bubble">
           <div class="modal-header">
-            <h5 class="modal-title" id="congratsModalLabel">
-              Congratulations!
-            </h5>
+            <h5 class="modal-title" id="resultsModalLabel"></h5>
             <button
               type="button"
               class="close"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -267,12 +266,12 @@
             <button
               type="button"
               class="btn btn-secondary"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" onclick="copyStats()">
-              Copy Stats
+            <button type="button" class="btn btn-primary" id="copyStats">
+              Share
             </button>
           </div>
         </div>

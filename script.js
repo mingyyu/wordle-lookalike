@@ -24,8 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (word.length === 5) {
               if (wordArray.includes(word)) {
                 console.log(`${word} is a valid English word!`);
-                processGuess(word);
+                result_of_word = processGuess(word);
                 moveNextRow();
+                if (currentRow >= 7 && result_of_word === 0) {
+                  showResultsModal(6, 1);
+                }
               } else {
                 displayErrorMessage(`${word} is not a valid English word.`);
                 resetRow();
@@ -54,12 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
   
       // Check if the guess is correct
       if (guess === answer) {
-        showCongratsModal(currentRow);
+        showResultsModal(currentRow, 0);
+        return 1;
+      } else {
+        return 0;
       }
     }
   
     function provideFeedback(guess) {
-      const feedback = [];
+      const feedback = {};
       const remainingOccurrences = {};
   
       // Initialize remainingOccurrences with the occurrences of each letter in the answer
@@ -75,13 +81,20 @@ document.addEventListener("DOMContentLoaded", function () {
           guessedLetter === answer[i] &&
           remainingOccurrences[guessedLetter] > 0
         ) {
-          feedback.push("correct-position");
+          feedback[i] = "correct-position";
           remainingOccurrences[guessedLetter]--;
-        } else if (remainingOccurrences[guessedLetter] > 0) {
-          feedback.push("wrong-position");
+        }
+      }
+      for (let i = 0; i < answer.length; i++) {
+        const guessedLetter = guess[i];
+        if (
+          remainingOccurrences[guessedLetter] > 0 &&
+          guessedLetter != answer[i]
+        ) {
+          feedback[i] = "wrong-position";
           remainingOccurrences[guessedLetter]--;
-        } else {
-          feedback.push("incorrect");
+        } else if (!(guessedLetter === answer[i])) {
+          feedback[i] = "incorrect";
           if (!answer.includes(guessedLetter)) {
             const keyboard_key = document.getElementById(
               guessedLetter.toUpperCase(),
@@ -90,13 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       }
-  
+      console.log(feedback);
       return feedback;
     }
   
     function updateUI(feedback) {
       // Update the UI based on the feedback
-      for (let i = 1; i <= feedback.length; i++) {
+      for (let i = 1; i <= Object.keys(feedback).length; i++) {
         const box = document.getElementById(`box${currentRow}${i}`);
         box.classList.remove("correct-position", "wrong-position", "incorrect");
         box.style.color = "#ffffff";
@@ -153,39 +166,42 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 3000);
     }
   
-    function showCongratsModal(guesses) {
+    function showResultsModal(guesses, result) {
+      var modalTitle = document.getElementById("resultsModalLabel");
       var modalContent = document.getElementById("modalContent");
   
       // Replace {guesses} with the actual number of rows
-      var statsText = "WORDLE " + guesses + "/6\n";
+      var statsText =
+        "The word was " + answer + "<br>WORDLE " + guesses + "/6<br>UNDER DEVELOPMENT";
   
       // Replace 🟨🟩⬜ with the actual situations in the rows and boxes
-      var row1 = "⬜⬜🟩⬜⬜";
-      var row2 = "⬜🟨🟩⬜⬜";
-      var row3 = "⬜⬜🟩⬜🟨";
-      var row4 = "⬜⬜🟩⬜⬜";
-      var row5 = "🟩🟩🟩🟩🟩";
+      //var row1 = "⬜⬜🟩⬜⬜";
+      //var row2 = "⬜🟨🟩⬜⬜";
+      //var row3 = "⬜⬜🟩⬜🟨";
+      //var row4 = "⬜⬜🟩⬜⬜";
+      //var row5 = "🟩🟩🟩🟩🟩";
   
-      statsText += row1 + "\n" + row2 + "\n" + row3 + "\n" + row4 + "\n" + row5;
-  
-      modalContent.textContent = statsText;
+      //statsText +=
+        //row1 + "<br>" + row2 + "<br>" + row3 + "<br>" + row4 + "<br>" + row5;
+      modalTitle.innerHTML = ["Congratulations!", "RIP LZY"][result];
+      modalContent.innerHTML = statsText;
   
       // Show the modal
-      $("#congratsModal").modal("show");
+      $("#resultsModal").modal("show");
     }
   
-    function copyStats() {
-      var statsText = document.getElementById("modalContent").textContent;
+    document.getElementById("copyStats").addEventListener("click", function () {
+      var copyText = document.getElementById("modalContent").textContent;
   
-      var tempInput = document.createElement("textarea");
-      tempInput.value = statsText;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempInput);
+      // Select the text field
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // For mobile devices
   
-      alert("Stats copied to clipboard!");
-    }
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(copyText.value);
+  
+      displayErrorMessage("Stats copied to clipboard!");
+    });
   
     // Add a click event listener to each keyboard button
     document.querySelectorAll(".keyboard-button").forEach(function (button) {
