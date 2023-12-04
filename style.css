@@ -20,6 +20,9 @@ body {
   margin-left: -15px;
   margin-top: -7px;
 }
+.speech-bubble:before {
+  display: none;
+}
 
 .custom-container {
   display: flex;
