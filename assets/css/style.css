@@ -120,3 +120,17 @@ body {
   transform: rotateX(90deg);
   transform: rotateX(0deg);
 }
+
+.error-message {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  border-radius: 0 !important;
+  border: 0 !important;
+  text-align: center;
+  background-color: #343a40; /* This should set the dark color */
+  color: #ffffff; /* Text color for better visibility */
+  font-weight: bold;
+}

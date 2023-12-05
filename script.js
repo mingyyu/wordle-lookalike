@@ -6,9 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("toggleGameMode").innerHTML = ["Daily", "Unlimited"][
     game_mode
   ];
-  var game_over = 0;
-  var currentDay = getCurrentDay();
+  var pauseGame = 1;
+  var resultsOut = 0;
+  var answerReveal = 0;
   var initialising = 1;
+  var first_attempt = 0;
+  var currentDay = getCurrentDay();
+  const delay = 500; // Adjust the delay (in milliseconds) between each box
 
   function getGameData() {
     const storedData = localStorage.getItem("gameData");
@@ -25,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update and save game statistics to localStorage
   function updateGameData(stat, outcome) {
-    if (initialising === 1) {
+    if (pauseGame === 1) {
       return;
     }
     let gameData = getGameData();
@@ -141,6 +145,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function sleep(ms) {
+    if (
+      (pauseGame === 1 && ms != 600 && answerReveal === 0) ||
+      initialising === 1
+    ) {
+      return;
+    }
     return new Promise((resolve) => {
       const timeoutId = setTimeout(() => {
         clearTimeout(timeoutId);
@@ -150,8 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function updateUI(feedback) {
-    const delay = 500; // Adjust the delay (in milliseconds) between each box
-    rowStaysTheSame = currentRow;
+    const rowStaysTheSame = currentRow;
     // Update the UI based on the feedback
     for (let i = 1; i <= Object.keys(feedback).length; i++) {
       const box = document.getElementById(`box${rowStaysTheSame}${i}`);
@@ -203,15 +212,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to display an error message for 5 seconds
-  function displayErrorMessage(message) {
+  function displayMessage(message) {
     const errorMessage = document.createElement("div");
     errorMessage.textContent = message;
-    errorMessage.className = "alert alert-secondary";
-    errorMessage.style.position = "fixed";
-    errorMessage.style.top = "20%";
-    errorMessage.style.left = "50%";
-    errorMessage.style.transform = "translate(-50%, -50%)";
-    errorMessage.style.zIndex = "10000";
+    errorMessage.className = "alert alert-dark error-message";
     document.body.appendChild(errorMessage);
 
     setTimeout(() => {
@@ -219,8 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
-  function showResultsModal(guesses, result) {
-    game_over = 1;
+  async function showResultsModal(guesses, result) {
+    resultsOut = 1;
+    pauseGame = 1;
+    answerReveal = 1;
     var modalTitle = document.getElementById("resultsModalLabel");
     var modalContent = document.getElementById("modalContent");
     // Replace {guesses} with the actual number of rows
@@ -259,6 +265,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show the modal
     //$("#resultsModal").modal("show");
+    await sleep(2500);
+    if (first_attempt === 1) {
+      displayMessage(
+        [
+          ["Seer", "Lucky", "Talented", "Good", "Average", "Sigh of relief"][
+            currentRow - 1
+          ],
+          "RIP",
+        ][result],
+      );
+    }
+    await sleep(1000);
+    answerReveal = 0;
     var results_modal = new bootstrap.Modal(
       document.getElementById("resultsModal"),
     );
@@ -375,15 +394,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log(text_to_copy);
     if (!navigator.clipboard) {
-      displayErrorMessage("Failed to copy.");
+      displayMessage("Failed to copy.");
     } else {
       navigator.clipboard
         .writeText(text_to_copy)
         .then(function () {
-          displayErrorMessage("Copied to clipboard!"); // success
+          displayMessage("Copied to clipboard!"); // success
         })
         .catch(function () {
-          displayErrorMessage("Failed to copy."); // error
+          displayMessage("Failed to copy."); // error
         });
     }
   });
@@ -391,7 +410,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add a click event listener to each keyboard button
   document.querySelectorAll(".keyboard-button").forEach(function (button) {
     button.addEventListener("click", function () {
-      if (game_over === 1) {
+      console.log("btn clicked, stats:" + pauseGame + " and " + initialising);
+      if (pauseGame === 1 && initialising === 0) {
         return;
       }
       // Get the letter associated with the button
@@ -439,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("removeLetterBtn")
     .addEventListener("click", function () {
-      if (game_over === 1) {
+      if (pauseGame === 1 && initialising === 0) {
         return;
       }
       // Get the latest letter box in the current row
@@ -473,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fetch the word list and handle the submission logic
   fetch(wordListURL)
     .then((response) => response.text())
-    .then((data) => {
+    .then(async (data) => {
       const wordArray = data.split("\n"); //.filter((word) => word.length === 5);
       if (game_mode == 0) {
         answer_index = getCurrentDay();
@@ -486,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .getElementById("submitBtn")
         .addEventListener("click", function () {
-          if (game_over === 1) {
+          if (pauseGame === 1 && initialising === 0) {
             return;
           }
           const word = getCurrentWord().toLowerCase();
@@ -500,11 +520,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateGameData(1, 0);
               }
             } else {
-              displayErrorMessage(`${word} is not a valid English word.`);
+              displayMessage(`${word} is not a valid English word.`);
               resetRow();
             }
           } else {
-            displayErrorMessage("Word must be 5 letters long.");
+            displayMessage("Word must be 5 letters long.");
             // Add your logic for an invalid word length
           }
         });
@@ -512,6 +532,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Initialize the game (e.g., set up UI, display instructions)
       initializeGame();
       initialising = 0;
+      await sleep(600);
+      if (resultsOut === 0) {
+        pauseGame = 0;
+        first_attempt = 1;
+      }
     })
     .catch((error) => {
       console.error("Error reading the word list:", error);
