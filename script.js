@@ -245,24 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
       " <br>" +
       guesses +
       "/6<br><br>";
-    for (let i = 1; i <= guesses; i++) {
-      for (let j = 1; j <= 5; j++) {
-        var box = document.getElementById("box" + i + j);
-        if (box.classList.contains("correct-position")) {
-          statsText += "🟩";
-        } else if (box.classList.contains("wrong-position")) {
-          statsText += "🟨";
-        } else {
-          statsText += "⬜";
-        }
-      }
-      statsText += "\n";
-    }
-
-    const copyStatsButton = document.getElementById("copyStats");
-
-    copyStatsButton.dataset.stats =
-      statsText + "\nPlay at mingyyu.github.io/wordle-lookalike";
 
     meanings = getWordMeaning(answer);
     modalTitle.innerHTML =
@@ -287,6 +269,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     await sleep(1000);
     answerReveal = 0;
+
+    for (let i = 1; i <= guesses; i++) {
+      for (let j = 1; j <= 5; j++) {
+        var box = document.getElementById("box" + i + j);
+        if (box.classList.contains("correct-position")) {
+          statsText += "🟩";
+        } else if (box.classList.contains("wrong-position")) {
+          statsText += "🟨";
+        } else {
+          statsText += "⬜";
+        }
+      }
+      statsText += "\n";
+    }
+
+    const copyStatsButton = document.getElementById("copyStats");
+
+    copyStatsButton.dataset.stats =
+      statsText + "\nPlay at mingyyu.github.io/wordle-lookalike";
+
     var results_modal = new bootstrap.Modal(
       document.getElementById("resultsModal"),
     );
