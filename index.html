@@ -44,6 +44,7 @@
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#helpModal"
+          id="helpModalAnimation"
         >
           <i class="bi bi-question-circle"></i>
         </button>
@@ -91,19 +92,23 @@
               <p class="nav-brand margin-text m-auto">Follow us on GitHub</p></a
             >
           </li>
-          <li class="nav-item d-flex flex-row m-2">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="switchGameMode"
-              />
-              <label class="form-check-label" for="toggleSwitch"
-                >Game Mode:
-              </label>
-            </div>
-            <div>
-              <p id="toggleGameMode" class="margin-text"></p>
+          <hr class="my-4" />
+          <li class="nav-item d-flex justify-content-between">
+            <p class="nav-brand h6 m-auto margin-text">Game Mode</p>
+
+            <div class="dropdown">
+              <button
+                class="btn btn-success dropdown-toggle"
+                type="button"
+                id="gameModeDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              ></button>
+              <ul class="dropdown-menu" aria-labelledby="gameModeDropdown">
+                <li>
+                  <a class="dropdown-item" href="#" id="changeGameMode"></a>
+                </li>
+              </ul>
             </div>
           </li>
           <!-- Content to Toggle -->
@@ -201,7 +206,7 @@
         </div>
         <div class="kb-row">
           <button class="btn btn-dark btn-wide" id="submitBtn">
-            <i class="bi bi-box-arrow-in-right"></i>
+            <i class="bi bi-arrow-return-left"></i>
           </button>
           <!---->
           <button class="btn btn-dark keyboard-button" data-letter="Z" id="Z">
@@ -241,42 +246,119 @@
       aria-labelledby="helpModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content speech-bubble">
+      <div
+        class="modal-dialog modal-fullscreen modal-dialog-centered"
+        role="document"
+      >
+        <div class="modal-content speech-bubble" style="border-radius: 0">
+          <div class="modal-header d-flex justify-content-between">
+            <h5
+              class="modal-title"
+              id="helpModalLabel"
+              style="font-weight: bold"
+            >
+              Wordle - How to Play
+            </h5>
+            <button
+              type="button"
+              class="btn-close ms-auto"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
           <div class="modal-body">
-            <h5 class="modal-title" id="helpModalLabel">Wordle</h5>
-            <p>Welcome to the Wordle Game! Here's how to play:</p>
-            <ul>
-              <li>
-                Try to guess the hidden word by entering your guesses in the
-                input field.
-              </li>
-              <li>
-                Each letter in your guess will be color-coded to provide
-                feedback:
-              </li>
-              <ul>
-                <li>
-                  <span class="text-success">Green</span>: Correct letter in the
-                  correct position
-                </li>
-                <li>
-                  <span class="text-warning">Yellow</span>: Correct letter in
-                  the wrong position
-                </li>
-                <li>
-                  <span class="text-dark" style="color: #6c757d !important"
-                    >Grey</span
-                  >: Incorrect letter
-                </li>
-              </ul>
-              <li>
-                Use the feedback to refine your guesses and uncover the hidden
-                word!
-              </li>
-              <li>You have a limited number of attempts to guess the word.</li>
-            </ul>
-            <p>Good luck and have fun playing Wordle!</p>
+            <p class="m-2">
+              Welcome to Wordle! This word-guessing game challenges you to
+              uncover the hidden word by making guesses.
+            </p>
+            <p class="m-2">
+              Input your guess for the 5-letter word, then hit the submit
+              button.
+            </p>
+            <p class="m-2">
+              Feedback will be represented by color-coded boxes:
+            </p>
+
+            <div
+              class="container custom-container"
+              style="
+                align-items: flex-start !important;
+                margin-left: 0 !important;
+              "
+            >
+              <div class="row letter-row" id="row1">
+                <div
+                  class="col letter-box correct-position boxSpecial"
+                  style="color: #ffffff"
+                >
+                  S
+                </div>
+                <div class="col letter-box">L</div>
+                <div class="col letter-box">A</div>
+                <div class="col letter-box">V</div>
+                <div class="col letter-box">E</div>
+              </div>
+            </div>
+            <p class="m-2">
+              <span class="text-success">Green</span>: Correct letter in the
+              correct position
+            </p>
+
+            <div
+              class="container custom-container"
+              style="
+                align-items: flex-start !important;
+                margin-left: 0 !important;
+              "
+            >
+              <div class="row letter-row">
+                <div class="col letter-box">V</div>
+                <div class="col letter-box">O</div>
+                <div class="col letter-box">D</div>
+                <div
+                  class="col letter-box wrong-position boxSpecial"
+                  style="color: #ffffff"
+                >
+                  K
+                </div>
+                <div class="col letter-box" id="box05">A</div>
+              </div>
+            </div>
+            <p class="m-2">
+              <span class="text-warning">Yellow</span>: Correct letter in the
+              wrong position
+            </p>
+
+            <div
+              class="container custom-container"
+              style="
+                align-items: flex-start !important;
+                margin-left: 0 !important;
+              "
+            >
+              <div class="row letter-row" id="row1">
+                <div class="col letter-box">T</div>
+                <div class="col letter-box">R</div>
+                <div class="col letter-box">O</div>
+                <div class="col letter-box">L</div>
+                <div
+                  class="col letter-box incorrect boxSpecial"
+                  style="color: #ffffff"
+                >
+                  L
+                </div>
+              </div>
+            </div>
+            <p class="m-2">
+              <span class="text-dark" style="color: #6c757d !important"
+                >Grey</span
+              >: Incorrect letter
+            </p>
+
+            <p class="m-2">
+              Use this feedback to adjust your guesses and reveal the hidden
+              word. Good luck!
+            </p>
           </div>
           <div class="modal-footer">
             <button

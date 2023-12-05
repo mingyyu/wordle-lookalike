@@ -3,7 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   var currentRow = 1;
   var currentBox = 1;
   var game_mode = getGameData().gameMode;
-  document.getElementById("toggleGameMode").innerHTML = ["Daily", "Unlimited"][
+  document.getElementById("gameModeDropdown").innerHTML = [
+    "Daily",
+    "Unlimited",
+  ][game_mode];
+  document.getElementById("changeGameMode").innerHTML = ["Unlimited", "Daily"][
     game_mode
   ];
   var pauseGame = 1;
@@ -554,12 +558,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   document
-    .getElementById("switchGameMode")
-    .addEventListener("change", async function () {
-      var toggleGameMode = document.getElementById("toggleGameMode");
+    .getElementById("changeGameMode")
+    .addEventListener("click", async function () {
+      var toggleGameMode = document.getElementById("gameModeDropdown");
+      var otherGameMode = document.getElementById("changeGameMode");
+      otherGameMode.innerHTML = ["Daily", "Unlimited"][game_mode];
       game_mode = [1, 0][game_mode];
       toggleGameMode.innerHTML = ["Daily", "Unlimited"][game_mode];
-      await updateGameData(2, game_mode);
+      updateGameData(2, game_mode);
       location.reload();
+    });
+
+  document
+    .getElementById("helpModalAnimation")
+    .addEventListener("click", async function () {
+      var boxes = document.querySelectorAll(".boxSpecial");
+
+      for (var i = 0; i < boxes.length; i++) {
+        var box = boxes[i];
+        box.classList.remove("flipped", "flipped-back");
+        box.classList.add("flipped");
+        await sleep(0.5 * delay);
+        box.classList.add("flipped-back");
+      }
     });
 });
