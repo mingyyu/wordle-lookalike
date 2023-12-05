@@ -1,48 +1,46 @@
-# Wordle Game (Lookalike)
+# Wordle Game
 
-Welcome to the Wordle Game! This is a simple word-guessing game where players try to guess a hidden word by entering their guesses.
+Welcome to the Wordle Game project! This is a web-based game where players try to guess a hidden word by entering guesses and receiving feedback.
+
+## Overview
+
+The Wordle Game is a simple and entertaining word-guessing game. Players enter words, and the game provides feedback on each guess, indicating correct letters in the correct position, correct letters in the wrong position, and incorrect letters. The objective is to guess the hidden word within a limited number of attempts.
+
+## Features
+
+- **Guess Feedback:** Each guess is color-coded to provide feedback on the correctness of the letters.
+- **Word of the Day:** The DAILY version of the game hosts the same word for everyone on the same day, allowing you to compare your competency with that of your friends.
+- **Dynamic Word Selection:** The game randomly selects a word from a predefined list at the start of each round when you're playing the UNLIMITED version.
+- **Results:** When the game is completed, feedback and an option to share your results with your friends appears on the screen.
 
 ## How to Play
 
-1. **Objective:** Guess the hidden word within a limited number of attempts.
-2. **Word Display:** The hidden word is displayed as a series of boxes, and each box represents a letter in the word.
-3. **Guessing:** Enter your guesses by selecting letters from the provided keyboard buttons.
-4. **Feedback:** After each guess, you'll receive feedback on the correctness of your guessed letters.
-   - Green: Correct letter in the correct position
-   - Yellow: Correct letter in the wrong position
-   - Grey: Incorrect letter
+1. Enter your guesses in the input field.
+2. Upon submission, each letter is color-coded as a feedback:
+   - **Green:** Correct letter in the correct position.
+   - **Yellow:** Correct letter in the wrong position.
+   - **Grey:** Incorrect letter.
+3. Use the feedback to refine your guesses and uncover the hidden word!
 
-## Game Rules
+## Game Statistics
 
-- You have a limited number of attempts (rows) to guess the hidden word.
-- The game ends when you correctly guess the word or exhaust all attempts.
+- The game keeps track of the number of wins, losses, and other relevant statistics.
+- Daily and Unlimited game modes are available, providing different challenges for you.
 
-## Modal Feedback
+## Getting Started
 
-- After each game, a modal will display congratulating you and showing your game stats.
-- Stats include the number of guesses, the correct and incorrect positions, and the arrangement of letters in each row.
-
-## How to Run
-
-Simply open the `index.html` file in a web browser to start playing the Wordle game.
+To begin playing, visit the [Wordle Game](https://mingyyu.github.io/wordle-lookalike/).
 
 ## Technologies Used
 
 - HTML
-- CSS (Bootstrap 5)
-- JavaScript (jQuery)
+- CSS (Bootstrap)
+- JavaScript
 
-## File Structure
+## Acknowledgments
 
-- `index.html`: Main HTML file with the game layout.
-- `style.css`: CSS file for custom styling.
-- `script.js`: JavaScript file for game logic.
-- `words.txt`: Text file containing a list of English words.
-
-## Acknowledgements
-
-- Bootstrap: Used for styling components and modal.
-- jQuery: Used for DOM manipulation and modal interactions.
+- Inspired by the classic Wordle game.
+- [Bootstrap](https://getbootstrap.com/) for styling.
 
 ## License
 
