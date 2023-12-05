@@ -83,6 +83,8 @@ body {
   font-weight: bold;
   padding: 0;
   border: 2px solid #c4c4c4; /* Border color (adjust as needed) */
+  transform-style: preserve-3d; /* Preserve 3D transformations for child elements */
+  transition: transform 0.25s; /* Add a transition for smooth animation */
 }
 
 .not-included {
@@ -103,4 +105,18 @@ body {
 .incorrect {
   background-color: #6c757d;
   border-color: #6c757d !important;
+}
+
+.margin-text {
+  margin-left: 1vw !important;
+}
+
+.flipped {
+  transform: rotateX(90deg);
+  transition: transform 0.25s ease;
+}
+
+.flipped-back {
+  transform: rotateX(90deg);
+  transform: rotateX(0deg);
 }

@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("toggleGameMode").innerHTML = ["Daily", "Unlimited"][
     game_mode
   ];
+  var game_over = 0;
   var currentDay = getCurrentDay();
   var initialising = 1;
 
@@ -28,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     let gameData = getGameData();
-    console.log("accessed gameData: " + JSON.stringify(gameData));
     if (stat == 2) {
       gameData.gameMode = outcome;
       localStorage.setItem("gameData", JSON.stringify(gameData));
@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Save updated statistics to localStorage
     localStorage.setItem("gameData", JSON.stringify(gameData));
-    console.log("new gameData: " + JSON.stringify(gameData));
   }
 
   let answer = "111111";
@@ -69,15 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
       game_mode === 0
     ) {
       for (let i = 0; i < stored_data.storedGuesses.length; i++) {
-        var button = document
+        document
           .querySelector(
             `.keyboard-button[data-letter="${stored_data.storedGuesses[i]}"]`,
           )
           .click();
         if (currentBox >= 6) {
           document.getElementById("submitBtn").click();
-        } else {
-          console.log("not submitting");
         }
       }
     }
@@ -143,13 +140,28 @@ document.addEventListener("DOMContentLoaded", function () {
     return feedback;
   }
 
-  function updateUI(feedback) {
+  function sleep(ms) {
+    return new Promise((resolve) => {
+      const timeoutId = setTimeout(() => {
+        clearTimeout(timeoutId);
+        resolve();
+      }, ms);
+    });
+  }
+
+  async function updateUI(feedback) {
+    const delay = 500; // Adjust the delay (in milliseconds) between each box
+    rowStaysTheSame = currentRow;
     // Update the UI based on the feedback
     for (let i = 1; i <= Object.keys(feedback).length; i++) {
-      const box = document.getElementById(`box${currentRow}${i}`);
+      const box = document.getElementById(`box${rowStaysTheSame}${i}`);
       box.classList.remove("correct-position", "wrong-position", "incorrect");
-      box.style.color = "#ffffff";
+      actual_delay = 0.25 * (i - 1) * delay;
+      await sleep(actual_delay);
+      box.classList.add("flipped");
+      await sleep(0.5 * delay);
 
+      box.style.color = "#ffffff";
       if (feedback[i - 1] === "correct-position") {
         box.classList.add("correct-position");
       } else if (feedback[i - 1] === "wrong-position") {
@@ -157,6 +169,9 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         box.classList.add("incorrect");
       }
+
+      // Initiate negative 90-degree rotation
+      box.classList.add("flipped-back");
     }
   }
 
@@ -205,13 +220,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showResultsModal(guesses, result) {
+    game_over = 1;
     var modalTitle = document.getElementById("resultsModalLabel");
     var modalContent = document.getElementById("modalContent");
     // Replace {guesses} with the actual number of rows
     var statsText =
       "WORDLE " +
       ["Daily " + currentDay, "Unlimited"][game_mode] +
-      " " +
+      " <br>" +
       guesses +
       "/6<br><br>";
     for (let i = 1; i <= guesses; i++) {
@@ -375,6 +391,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add a click event listener to each keyboard button
   document.querySelectorAll(".keyboard-button").forEach(function (button) {
     button.addEventListener("click", function () {
+      if (game_over === 1) {
+        return;
+      }
       // Get the letter associated with the button
       var letter = button.dataset.letter;
 
@@ -383,7 +402,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var box = document.getElementById("box" + currentRow + currentBox);
 
       // Check if the current box is empty
-      console.log(box + " where row=" + currentRow + " and box=" + currentBox);
       if (box.innerHTML === "") {
         // Place the letter in the current box
         box.innerHTML = letter;
@@ -421,6 +439,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("removeLetterBtn")
     .addEventListener("click", function () {
+      if (game_over === 1) {
+        return;
+      }
       // Get the latest letter box in the current row
       var latestLetterBox = document.getElementById(
         "box" + currentRow + (currentBox - 1),
@@ -453,7 +474,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(wordListURL)
     .then((response) => response.text())
     .then((data) => {
-      const wordArray = data.split("\n").filter((word) => word.length === 5);
+      const wordArray = data.split("\n"); //.filter((word) => word.length === 5);
       if (game_mode == 0) {
         answer_index = getCurrentDay();
       } else {
@@ -465,6 +486,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .getElementById("submitBtn")
         .addEventListener("click", function () {
+          if (game_over === 1) {
+            return;
+          }
           const word = getCurrentWord().toLowerCase();
           if (word.length === 5) {
             if (wordArray.includes(word)) {
@@ -496,15 +520,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("switchGameMode")
     .addEventListener("change", function () {
-      var toggleContent = document.getElementById("toggleGameMode");
-      if (game_mode == 0) {
-        game_mode = 1;
-        gameModeText = " Unlimited";
-      } else {
-        game_mode = 0;
-        gameModeText = " Daily";
-      }
-      toggleContent.innerHTML = gameModeText;
+      var toggleGameMode = document.getElementById("toggleGameMode");
+      game_mode = [1, 0][game_mode];
+      toggleGameMode.innerHTML = ["Daily", "Unlimited"][game_mode];
       updateGameData(2, game_mode);
+      location.reload();
     });
 });
