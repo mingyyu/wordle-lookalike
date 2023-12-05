@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update and save game statistics to localStorage
   function updateGameData(stat, outcome) {
-    if (pauseGame === 1) {
+    if (pauseGame === 1 && stat != 2) {
       return;
     }
     let gameData = getGameData();
@@ -159,6 +159,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function actualSleep(ms) {
+    return new Promise((resolve) => {
+      const timeoutId = setTimeout(() => {
+        clearTimeout(timeoutId);
+        resolve();
+      }, ms);
+    });
+  }
+
   async function updateUI(feedback) {
     const rowStaysTheSame = currentRow;
     // Update the UI based on the feedback
@@ -270,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
       displayMessage(
         [
           ["Seer", "Lucky", "Talented", "Good", "Average", "Sigh of relief"][
-            currentRow - 1
+            currentRow - 2
           ],
           "RIP",
         ][result],
@@ -544,11 +553,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document
     .getElementById("switchGameMode")
-    .addEventListener("change", function () {
+    .addEventListener("change", async function () {
       var toggleGameMode = document.getElementById("toggleGameMode");
       game_mode = [1, 0][game_mode];
       toggleGameMode.innerHTML = ["Daily", "Unlimited"][game_mode];
-      updateGameData(2, game_mode);
+      await updateGameData(2, game_mode);
       location.reload();
     });
 });

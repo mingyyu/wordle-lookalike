@@ -68,7 +68,7 @@ body {
 .letter-row {
   height: 8vh;
   max-height: 18vw;
-  margin: 0.5%; /*min(0.5vw, 0.5vh);*/
+  margin: 0.5vh; /*min(0.5vw, 0.5vh);*/
   gap: 1%; /*min(0.5vh, 0.5vw);*/
   align-items: center;
 }
