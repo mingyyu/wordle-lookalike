@@ -20,11 +20,13 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
+    <nav class="navbar navbar-light bg-light">
+      <div
+        class="container-fluid d-flex justify-content-between flex-nowrap align-items-center"
+      >
         <!-- Menu Icon on the left -->
         <button
-          class="navbar-toggler d-md-block"
+          class="btn btn-light d-md-block"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#sidebar"
@@ -34,20 +36,31 @@
         </button>
 
         <!-- Centered "WORDLE" title -->
-        <a class="navbar-brand mx-auto d-flex flex-row" href="#"
-          ><p class="h1">wordle.</p>
-          <p class="h5" id="gameModeDisplay"></p
-        ></a>
+        <a class="navbar-brand mx-auto d-flex" href="#">
+          <p class="h1">wordle.</p>
+          <p class="h5" id="gameModeDisplay"></p>
+        </a>
+
         <!-- Question Mark Icon on the right -->
-        <button
-          class="navbar-toggler d-md-block"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#helpModal"
-          id="helpModalAnimation"
-        >
-          <i class="bi bi-question-circle"></i>
-        </button>
+        <div class="d-inline-flex">
+          <button
+            class="btn btn-light d-md-block"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#statsModal"
+          >
+            <i class="bi bi-bar-chart"></i>
+          </button>
+          <button
+            class="btn btn-light d-md-block"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#helpModal"
+            id="helpModalAnimation"
+          >
+            <i class="bi bi-question-circle"></i>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -60,7 +73,7 @@
     >
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="sidebarLabel">
-          Wordle-lookalike v1.0.2
+          Wordle-lookalike v1.0.4
         </h5>
         <button
           type="button"
@@ -74,7 +87,7 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <p class="nav-brand">
-              What's new in v1.0.2: bug fixes and general improvements
+              What's new in v1.0.4: Bug fixes, stats added
             </p>
           </li>
           <li class="nav-item">
@@ -373,7 +386,51 @@
       </div>
     </div>
     <div
-      class="modal fade"
+      class="modal fade clean-modal"
+      id="statsModal"
+      tabindex="-1"
+      aria-labelledby="statsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content speech-bubble">
+          <div class="modal-header">
+            <h5 class="modal-title">Stats</h5>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">DAILY</div>
+          <div class="modal-body d-inline-flex">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title" id="displayWins"></h5>
+                <p class="card-text">Wins</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title" id="displayLosses"></h5>
+                <p class="card-text">Losses</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title" id="displayPercent"></h5>
+                <p class="card-text">% Wins</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade clean-modal"
       id="resultsModal"
       tabindex="-1"
       role="dialog"
@@ -394,7 +451,7 @@
             </button>
           </div>
           <div class="modal-body" id="modalContent">
-            <!-- Content will be dynamically populated here -->
+            Thank you for attempting Wordle. Share this with others!
           </div>
           <div class="modal-footer">
             <button

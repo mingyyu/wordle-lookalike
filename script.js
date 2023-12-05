@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const wordListURL = "words.txt"; // Adjust the URL to your word list file
   var currentRow = 1;
   var currentBox = 1;
-  var game_mode = getGameData().gameMode;
+  var currentData = getGameData();
+  var game_mode = currentData.gameMode;
   document.getElementById("gameModeDropdown").innerHTML = [
     "Daily",
     "Unlimited",
@@ -10,10 +11,29 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("changeGameMode").innerHTML = ["Unlimited", "Daily"][
     game_mode
   ];
+
+  function calcPercentage(wins, losses) {
+    try {
+      percent = Math.round((wins / (wins + losses)) * 100);
+    } catch (error) {
+      percent = "nAn";
+    }
+    return percent;
+  }
+
+  function updateDailyData() {
+    currentData = getGameData();
+    document.getElementById("displayWins").innerHTML = currentData.winsDaily;
+    document.getElementById("displayLosses").innerHTML =
+      currentData.lossesDaily;
+    document.getElementById("displayPercent").innerHTML = calcPercentage(
+      currentData.winsDaily,
+      currentData.lossesDaily,
+    );
+  }
+  updateDailyData();
+
   var pauseGame = 1;
-  var resultsOut = 0;
-  var answerReveal = 0;
-  var initialising = 1;
   var first_attempt = 0;
   var currentDay = getCurrentDay();
   const delay = 500; // Adjust the delay (in milliseconds) between each box
@@ -98,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check if the guess is correct
     if (guess === answer) {
       showResultsModal(currentRow, 0);
-      updateGameData(0, 0);
       return 1;
     } else {
       return 0;
@@ -149,21 +168,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function sleep(ms) {
-    if (
-      (pauseGame === 1 && ms != 600 && answerReveal === 0) ||
-      initialising === 1
-    ) {
+    if (pauseGame >= 1 && pauseGame != 2 && ms != 600) {
       return;
     }
-    return new Promise((resolve) => {
-      const timeoutId = setTimeout(() => {
-        clearTimeout(timeoutId);
-        resolve();
-      }, ms);
-    });
-  }
-
-  function actualSleep(ms) {
     return new Promise((resolve) => {
       const timeoutId = setTimeout(() => {
         clearTimeout(timeoutId);
@@ -237,17 +244,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function showResultsModal(guesses, result) {
-    resultsOut = 1;
-    pauseGame = 1;
-    answerReveal = 1;
+    pauseGame = 2;
     var modalTitle = document.getElementById("resultsModalLabel");
-    var modalContent = document.getElementById("modalContent");
     // Replace {guesses} with the actual number of rows
     var statsText =
       "WORDLE " +
       ["Daily " + currentDay, "Unlimited"][game_mode] +
       " <br>" +
-      guesses +
+      (currentRow - 1) +
       "/6<br><br>";
 
     meanings = getWordMeaning(answer);
@@ -256,12 +260,13 @@ document.addEventListener("DOMContentLoaded", function () {
       " <br>The word was " +
       answer +
       ".";
-    modalContent.innerHTML = "Share this wordle with others!";
 
     // Show the modal
     //$("#resultsModal").modal("show");
     await sleep(2500);
     if (first_attempt === 1) {
+      updateGameData(result, 0);
+      updateDailyData();
       displayMessage(
         [
           ["Seer", "Lucky", "Talented", "Good", "Average", "Sigh of relief"][
@@ -272,9 +277,9 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
     await sleep(1000);
-    answerReveal = 0;
+    pauseGame = 3;
 
-    for (let i = 1; i <= guesses; i++) {
+    for (let i = 1; i <= currentRow - 1; i++) {
       for (let j = 1; j <= 5; j++) {
         var box = document.getElementById("box" + i + j);
         if (box.classList.contains("correct-position")) {
@@ -425,8 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add a click event listener to each keyboard button
   document.querySelectorAll(".keyboard-button").forEach(function (button) {
     button.addEventListener("click", function () {
-      console.log("btn clicked, stats:" + pauseGame + " and " + initialising);
-      if (pauseGame === 1 && initialising === 0) {
+      if (pauseGame >= 2) {
         return;
       }
       // Get the letter associated with the button
@@ -474,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("removeLetterBtn")
     .addEventListener("click", function () {
-      if (pauseGame === 1 && initialising === 0) {
+      if (pauseGame >= 2) {
         return;
       }
       // Get the latest letter box in the current row
@@ -510,6 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.text())
     .then(async (data) => {
       const wordArray = data.split("\n"); //.filter((word) => word.length === 5);
+      console.log("array of words: " + JSON.stringify(wordArray.slice(0, 10)));
       if (game_mode == 0) {
         answer_index = getCurrentDay();
       } else {
@@ -521,7 +526,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .getElementById("submitBtn")
         .addEventListener("click", function () {
-          if (pauseGame === 1 && initialising === 0) {
+          if (pauseGame >= 2) {
             return;
           }
           const word = getCurrentWord().toLowerCase();
@@ -532,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function () {
               moveNextRow();
               if (currentRow >= 7 && result_of_word === 0) {
                 showResultsModal(6, 1);
-                updateGameData(1, 0);
               }
             } else {
               displayMessage(`${word} is not a valid English word.`);
@@ -546,9 +550,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Initialize the game (e.g., set up UI, display instructions)
       initializeGame();
-      initialising = 0;
       await sleep(600);
-      if (resultsOut === 0) {
+      if (pauseGame != 2) {
         pauseGame = 0;
         first_attempt = 1;
       }
