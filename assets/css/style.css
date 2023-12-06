@@ -61,8 +61,8 @@ body {
 }
 
 .kb-row .btn-wide {
-  width: 15%;
-  font-weight: bold;
+  width: 12vw;
+  /*width: 15%;*/
 }
 
 .letter-row {

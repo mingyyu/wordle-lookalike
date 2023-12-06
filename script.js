@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "WORDLE " +
       ["Daily " + currentDay, "Unlimited"][game_mode] +
       " <br>" +
-      (currentRow - 1) +
+      currentRow +
       "/6<br><br>";
 
     meanings = getWordMeaning(answer);
